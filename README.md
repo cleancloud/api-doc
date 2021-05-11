@@ -1,2 +1,2 @@
-# cloud-api-doc
+# api-doc
 CleanCloud API documentation 
