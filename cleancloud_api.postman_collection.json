@@ -1,0 +1,3408 @@
+{
+	"info": {
+		"_postman_id": "41e37594-c889-473c-8ad0-25278a218af4",
+		"name": "CleanCloud API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API token",
+			"item": [
+				{
+					"name": "fetch api token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fd9c11c2-f962-4a56-88ab-4ab29ff9b7a6",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "953f760a-5896-40bd-94a4-e55282aef661",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api_tokens",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api_tokens"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7f8d9931-8575-417a-b2e7-cc83c9df4adf",
+						"type": "text/javascript",
+						"exec": [
+							"var CryptoJS = require(\"crypto-js\");",
+							"",
+							"authorize({code:pm.variables.get(\"user_token\"),secret:pm.variables.get(\"user_secret\")},pm.request.url.getPath(),pm.request.method,pm.request.body.raw);",
+							"",
+							"function authorize(credential, resource, method, data) {",
+							"    let algorithm = 'SHA-256'",
+							"    let signedHeader = 'authorization'",
+							"    if (resource.indexOf('?') >= 0) {",
+							"        resource = resource.substring(0, resource.indexOf('?'))",
+							"    }",
+							"    let canonicalRequest = algorithm + '\\n' + ",
+							"                           method.toUpperCase() + '\\n' + ",
+							"                           resource + '\\n' +",
+							"                           '' + '\\n' + ",
+							"                           signedHeader + ':\\n' +",
+							"                           CryptoJS.enc.Hex.stringify(CryptoJS.SHA256(data)) ",
+							"",
+							"",
+							"    let hashedRequest = CryptoJS.enc.Hex.stringify(CryptoJS.SHA256(canonicalRequest))",
+							"    ",
+							"    pm.environment.set(\"authorization\", 'Algorithm=' + algorithm +",
+							"           ',Credential=' + credential.code +",
+							"           ',SignedHeaders=' + signedHeader +",
+							"           ',Signature=' + CryptoJS.enc.Hex.stringify(CryptoJS.HmacSHA256(hashedRequest, credential.secret)));",
+							"  }",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d27c1d1f-d436-4448-b482-c0bb3d4144b0",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"accessCode\", jsonData.accessCode);",
+							"postman.setEnvironmentVariable(\"secretCode\", jsonData.secretCode);"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "API content",
+			"item": [
+				{
+					"name": "clouds",
+					"item": [
+						{
+							"name": "list clouds",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch cloud",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create cloud",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"rootCode\": \"string\",\r\n  \"name\": \"string\",\r\n  \"viewCodes\": [\r\n    \"string\"\r\n  ],\r\n  \"provider\": {\r\n    \"type\": \"string\",\r\n    \"roleArn\": \"string\",\r\n    \"externalId\": \"string\",\r\n    \"tenantId\": \"string\",\r\n    \"applicationId\": \"string\",\r\n    \"subscriptionId\": \"string\",\r\n    \"secretKey\": \"string\",\r\n    \"credential\": \"string\"\r\n  },\r\n  \"billing\": {\r\n    \"bucketName\": \"string\",\r\n    \"reportPath\": \"string\"\r\n  }\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update cloud",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"rootCode\": \"string\",\r\n  \"name\": \"string\",\r\n  \"viewCodes\": [\r\n    \"string\"\r\n  ],\r\n  \"provider\": {\r\n    \"type\": \"string\",\r\n    \"roleArn\": \"string\",\r\n    \"externalId\": \"string\",\r\n    \"tenantId\": \"string\",\r\n    \"applicationId\": \"string\",\r\n    \"subscriptionId\": \"string\",\r\n    \"secretKey\": \"string\",\r\n    \"credential\": \"string\"\r\n  },\r\n  \"billing\": {\r\n    \"bucketName\": \"string\",\r\n    \"reportPath\": \"string\"\r\n  }\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove cloud",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fecth cloud permissions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/permissions",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"permissions"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch cloud inventory",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/inventory",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"inventory"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch cloud credentials setup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/external_id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										"external_id"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "linked clouds",
+					"item": [
+						{
+							"name": "list linked clouds",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/linkeds",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"linkeds"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "cloud customers",
+					"item": [
+						{
+							"name": "list cloud customers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/customers",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"customers"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch cloud customer",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/customers/:customerCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"customers",
+										":customerCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "customerCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list customer linked clouds",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/customers/:customerCode/linkeds",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"customers",
+										":customerCode",
+										"linkeds"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "customerCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Used for Azure CSP only",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a4736efb-67ab-4352-8147-ac5c8dd3729c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "94395cd7-3192-43ab-847a-29306d801205",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "cloud_views",
+					"item": [
+						{
+							"name": "list cloud views",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/cloud_views",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cloud_views"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch cloud view",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/cloud_views/:viewCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cloud_views",
+										":viewCode"
+									],
+									"variable": [
+										{
+											"key": "viewCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create cloud view",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"code\": \"string\",\r\n  \"name\": \"string\",\r\n  \"clouds\": {\r\n    \"cloud_code\": \"cloud_name\"\r\n  },\r\n  \"filters\": \"string\" \r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/cloud_views",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cloud_views"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update cloud view",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"code\": \"string\",\r\n  \"name\": \"string\",\r\n  \"clouds\": {\r\n    \"cloud_code\": \"cloud_name\"\r\n  },\r\n  \"filters\": \"string\" \r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/cloud_views/:viewCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cloud_views",
+										":viewCode"
+									],
+									"variable": [
+										{
+											"key": "viewCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove cloud view",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/cloud_views/:viewCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cloud_views",
+										":viewCode"
+									],
+									"variable": [
+										{
+											"key": "viewCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fecth cloud view permissions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/cloud_views/:cloud_view_id/permissions",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cloud_views",
+										":cloud_view_id",
+										"permissions"
+									],
+									"variable": [
+										{
+											"key": "cloud_view_id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9af42851-132f-4d03-b427-277c58869f5a",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "f0fa91a7-1a1b-40b3-9f46-3ddb3aa76a98",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "cloud tags",
+					"item": [
+						{
+							"name": "list cloud tags",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/tags/:product",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"tags",
+										":product"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "product",
+											"value": "SCORE"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "score",
+					"item": [
+						{
+							"name": "list scores setup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch score setup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/:scoreCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										":scoreCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "scoreCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list score assessment",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/assessment?assessCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"assessment"
+									],
+									"query": [
+										{
+											"key": "assessCode",
+											"value": null
+										}
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list score assessment history",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/history?fromAssessCode&toAssessCode&lastAssessments=4",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"history"
+									],
+									"query": [
+										{
+											"key": "fromAssessCode",
+											"value": null
+										},
+										{
+											"key": "toAssessCode",
+											"value": null
+										},
+										{
+											"key": "lastAssessments",
+											"value": "4"
+										}
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list score assessment diff",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/:baseAssessCode/to/:diffAssessCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"assessment",
+										":baseAssessCode",
+										"to",
+										":diffAssessCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "baseAssessCode",
+											"value": ""
+										},
+										{
+											"key": "diffAssessCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "score totals",
+					"item": [
+						{
+							"name": "list score totals",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/totals?assessCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"assessment",
+										"totals"
+									],
+									"query": [
+										{
+											"key": "assessCode",
+											"value": ""
+										}
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list score status",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/status?assessCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"assessment",
+										"status"
+									],
+									"query": [
+										{
+											"key": "assessCode",
+											"value": ""
+										}
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "score comments",
+					"item": [
+						{
+							"name": "list comments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/comments",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"comments"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list resource comments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/comments/:resourceId",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"comments",
+										":resourceId"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "resourceId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update comments",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"cloudCode\": \"string\",\n    \"resourceId\": \"string\",\n    \"comments\": [\n      {\n        \"userCode\": \"string\",\n        \"comment\": \"string\"\n      }\n    ]\n  }\n]"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/comments",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"comments"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "score risk acceptance",
+					"item": [
+						{
+							"name": "list risk acceptances",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"risk_acceptance"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "comment risk acceptance",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\" : {\n    \"cloudCode\": \"string\",\n    \"checkCode\": \"string\",\n    \"resourceId\": \"string\"\n  },\n  \"comments\": [\n\t{\n\t  \"comment\": \"string\"\n\t}\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/_/comments",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"risk_acceptance",
+										"_",
+										"comments"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create risk acceptances",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\" : {\n    \"cloudCode\": \"string\",\n    \"checkCode\": \"string\",\n    \"resourceId\": \"string\"\n  },\n  \"expirationDate\": 1,\n  \"comments\": [\n\t{\n\t  \"comment\": \"string\"\n\t}\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"risk_acceptance"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update risk acceptance",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\" : {\n    \"cloudCode\": \"string\",\n    \"checkCode\": \"string\",\n    \"resourceId\": \"string\"\n  },\n  \"status\": \"string\",\n  \"expirationDate\": 1,\n  \"comments\": [\n\t{\n\t  \"comment\": \"string\"\n\t}\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/_",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"risk_acceptance",
+										"_"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "approve risk acceptance",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\" : {\n    \"cloudCode\": \"string\",\n    \"checkCode\": \"string\",\n    \"resourceId\": \"string\"\n  },\n  \"status\": \"string\",\n  \"expirationDate\": 1,\n  \"comments\": [\n\t{\n\t  \"comment\": \"string\"\n\t}\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/approval",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"risk_acceptance",
+										"approval"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "score report",
+					"item": [
+						{
+							"name": "download score report",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/reports/:assessCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"reports",
+										":assessCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "assessCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1b6eac77-faa5-4045-945a-6c767a2aae44",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ca13680a-0fd9-46d3-aeff-2cb64d9592f3",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "inspect",
+					"item": [],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "recommendation",
+					"item": [
+						{
+							"name": "list recommendations setup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch recommendation setup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/:recommendationCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										":recommendationCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "recommendationCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list recommendations execution",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode:/recommendations/execution?executionCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode:",
+										"recommendations",
+										"execution"
+									],
+									"query": [
+										{
+											"key": "executionCode",
+											"value": null
+										}
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "recommendation rules",
+					"item": [
+						{
+							"name": "list recommendations rules",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/rules",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										"rules"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch recommendation rules",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/rules/:recommendationCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										"rules",
+										":recommendationCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "recommendationCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update recommendation rules",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"rules\": {\n\t\t\"ruleName\": \"ruleValue\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/rules/:recommendationCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										"rules",
+										":recommendationCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "recommendationCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reset recommendation rules",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/rules/:recommendationCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										"rules",
+										":recommendationCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "recommendationCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "recommendation metrics",
+					"item": [
+						{
+							"name": "fetch recommendation metrics",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}/clouds/:cloudCode/recommendations/:recommendationCode/metrics/:metricName?fromDate&toDate&regionCode&resourceIds",
+									"host": [
+										"{{host}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										":recommendationCode",
+										"metrics",
+										":metricName"
+									],
+									"query": [
+										{
+											"key": "fromDate",
+											"value": null
+										},
+										{
+											"key": "toDate",
+											"value": null
+										},
+										{
+											"key": "regionCode",
+											"value": null
+										},
+										{
+											"key": "resourceIds",
+											"value": null,
+											"description": "Comma separated values"
+										}
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "recommendationCode",
+											"value": ""
+										},
+										{
+											"key": "metricName",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "integrations",
+					"item": [
+						{
+							"name": "list integration connections",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/connections",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"connections"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch integration connection",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/connections/:connectionCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"connections",
+										":connectionCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "connectionCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create integration connection",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"string\",\n\t\"provider\": \"string\",\n\t\"disabled\": false,\n\t\"endpoint\": \"string\",\n\t\"key\": \"string\",\n\t\"secret\": \"string\",\n\t\"metadata\": {\n\t\t\"key\": \"value\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/connections",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"connections"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update integration connection",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"string\",\n\t\"provider\": \"string\",\n\t\"disabled\": false,\n\t\"endpoint\": \"string\",\n\t\"key\": \"string\",\n\t\"secret\": \"string\",\n\t\"metadata\": {\n\t\t\"key\": \"value\"\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/connections/:connectionCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"connections",
+										":connectionCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "connectionCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove integration connection",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/connections/:connectionCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"connections",
+										":connectionCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "connectionCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "ticket trackers",
+					"item": [
+						{
+							"name": "list ticket trackers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/ticket_trackers",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"ticket_trackers"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch ticket tracker",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/ticket_trackers/:trackerCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"ticket_trackers",
+										":trackerCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "trackerCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create ticket tracker",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"string\",\n\t\"connections\": [\n\t\t{\n\t\t\t\"code\": \"string\"\n\t\t}\t\n\t],\n\t\"disabled\": false,\n\t\"product\": \"SCORE\",\n\t\"trigger\": \"string\",\n\t\"criteria\": {\n\t\t\"service\": \"string\",\n\t\t\"region\": \"string\",\n\t\t\"checkCode\": \"string\",\n\t\t\"severity\": 1,\n\t\t\"tags\": {\n\t\t\t\"tagKey\": \"tagValue\"\n\t\t}\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/ticket_trackers",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"ticket_trackers"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update ticket tracker",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"string\",\n\t\"connections\": [\n\t\t{\n\t\t\t\"code\": \"string\"\n\t\t}\t\n\t],\n\t\"disabled\": false,\n\t\"product\": \"SCORE\",\n\t\"trigger\": \"string\",\n\t\"criteria\": {\n\t\t\"service\": \"string\",\n\t\t\"region\": \"string\",\n\t\t\"checkCode\": \"string\",\n\t\t\"severity\": 1,\n\t\t\"tags\": {\n\t\t\t\"tagKey\": \"tagValue\"\n\t\t}\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/ticket_trackers/:trackerCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"ticket_trackers",
+										":trackerCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "trackerCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove ticket tracker",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/ticket_trackers/:trackerCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"ticket_trackers",
+										":trackerCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "trackerCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "tickets",
+					"item": [
+						{
+							"name": "list tickets",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/tickets",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"tickets"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create tickets",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"resourceId\": \"string\",\n\t\"title\": \"string\",\n\t\"description\": \"string\",\n\t\"trackerCode\": \"string\",\n\t\"connectionCodes\": [\n\t\t\"string\"\t\n\t]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/tickets",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"tickets"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "GET users",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/users",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET user",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/users/:userCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										":userCode"
+									],
+									"variable": [
+										{
+											"key": "userCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST users",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"active\": true,\r\n  \"name\": \"string\",\r\n  \"company\": \"string\",\r\n  \"telephone\": \"string\",\r\n  \"title\": \"string\",\r\n  \"email\": \"string\",\r\n  \"picture\": \"string\",\r\n  \"accountAdmin\": false,\r\n  \"groupCodes\": [\r\n    \"string\"\r\n  ],\r\n  \"generatePassword\": false,\r\n  \"loginPasswordReset\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/users",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT user",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"active\": true,\r\n  \"name\": \"string\",\r\n  \"company\": \"string\",\r\n  \"telephone\": \"string\",\r\n  \"title\": \"string\",\r\n  \"email\": \"string\",\r\n  \"picture\": \"string\",\r\n  \"accountAdmin\": false,\r\n  \"groupCodes\": [\r\n    \"string\"\r\n  ],\r\n  \"generatePassword\": false,\r\n  \"loginPasswordReset\": false\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/users/:userCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										":userCode"
+									],
+									"variable": [
+										{
+											"key": "userCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE user",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/users/:userCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"users",
+										":userCode"
+									],
+									"variable": [
+										{
+											"key": "userCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "user_groups",
+					"item": [
+						{
+							"name": "GET user_groups",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/user_groups",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET user_group",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/user_groups/:groupCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_groups",
+										":groupCode"
+									],
+									"variable": [
+										{
+											"key": "groupCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST user_groups",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"users\": [\r\n    \"string\"\r\n  ],\r\n  \"accountAdmin\": false,\r\n  \"permissionGroups\": [\r\n    {\r\n      \"code\": \"string\",\r\n      \"grantedTo\": {\r\n      \t\"cloudCode\": \"string\"\r\n      }\r\n    }\r\n  ]\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/user_groups",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT user_group",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"users\": [\r\n    \"string\"\r\n  ],\r\n  \"accountAdmin\": false,\r\n  \"permissionGroups\": [\r\n    {\r\n      \"code\": \"string\",\r\n      \"grantedTo\": {\r\n      \t\"cloudCode\": \"string\"\r\n      }\r\n    }\r\n  ]\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/user_groups/:groupCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_groups",
+										":groupCode"
+									],
+									"variable": [
+										{
+											"key": "groupCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE user_group",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/user_groups/:groupCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user_groups",
+										":groupCode"
+									],
+									"variable": [
+										{
+											"key": "groupCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "permission_groups",
+					"item": [
+						{
+							"name": "GET permission_groups",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/permission_groups",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"permission_groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET permission_group",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/permission_groups/:groupCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"permission_groups",
+										":groupCode"
+									],
+									"variable": [
+										{
+											"key": "groupCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST permission_groups",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"scope\": \"ACCOUNT\",\r\n  \"permissions\": [\r\n    \"string\"\r\n  ]\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/permission_groups",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"permission_groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT permission_group",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"scope\": \"ACCOUNT\",\r\n  \"permissions\": [\r\n    \"string\"\r\n  ]\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/permission_groups/:groupCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"permission_groups",
+										":groupCode"
+									],
+									"variable": [
+										{
+											"key": "groupCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE permission_group",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/permission_groups/:groupCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"permission_groups",
+										":groupCode"
+									],
+									"variable": [
+										{
+											"key": "groupCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "deprecated",
+					"item": [
+						{
+							"name": "reports",
+							"item": [
+								{
+									"name": "GET reports",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{authorization}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{host}}/reports",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"reports"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "POST reports",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{authorization}}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/javascript",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"code\": \"string\",\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"provider\": \"AWS\",\r\n  \"costAllocation\": true,\r\n  \"costTypes\": [\r\n    \"TOTAL\"\r\n  ],\r\n  \"grouping\": [\r\n    {\r\n      \"name\": \"string\",\r\n      \"metaName\": \"string\",\r\n      \"description\": \"string\",\r\n      \"column\": \"LABEL\",\r\n      \"operator\": \"EQUAL\",\r\n      \"value\": \"string\"\r\n    }\r\n  ],\r\n  \"filters\": {\r\n    \"operator\": \"AND\",\r\n    \"filters\": [\r\n      {\r\n        \"column\": \"LABEL\",\r\n        \"operator\": \"EQUAL\",\r\n        \"value\": \"string\"\r\n      }\r\n    ]\r\n  },\r\n  \"reRatings\": {\r\n    \"additionalProp1\": \"string\",\r\n    \"additionalProp2\": \"string\",\r\n    \"additionalProp3\": \"string\"\r\n  },\r\n  \"limit\": {\r\n    \"type\": \"NONE\",\r\n    \"limit\": 0,\r\n    \"order\": \"NONE\"\r\n  },\r\n  \"date\": {\r\n    \"type\": \"FIXED\",\r\n    \"start\": \"2019-01-22T19:14:27.851Z\",\r\n    \"end\": \"2019-01-22T19:14:27.851Z\",\r\n    \"period\": 0,\r\n    \"length\": \"HOUR\",\r\n    \"granularity\": \"HOUR\",\r\n    \"order\": \"NONE\"\r\n  },\r\n  \"createdTime\": \"2019-01-22T19:14:27.851Z\",\r\n  \"updatedTime\": \"2019-01-22T19:14:27.851Z\",\r\n  \"users\": {\r\n    \"additionalProp1\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp2\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp3\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    }\r\n  },\r\n  \"userGroups\": {\r\n    \"additionalProp1\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp2\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp3\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    }\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{host}}/reports",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"reports"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET report",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{authorization}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{host}}/reports/:report_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"reports",
+												":report_id"
+											],
+											"variable": [
+												{
+													"key": "report_id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PUT report",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{authorization}}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/javascript"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"code\": \"string\",\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"provider\": \"AWS\",\r\n  \"costAllocation\": true,\r\n  \"costTypes\": [\r\n    \"TOTAL\"\r\n  ],\r\n  \"grouping\": [\r\n    {\r\n      \"name\": \"string\",\r\n      \"metaName\": \"string\",\r\n      \"description\": \"string\",\r\n      \"column\": \"LABEL\",\r\n      \"operator\": \"EQUAL\",\r\n      \"value\": \"string\"\r\n    }\r\n  ],\r\n  \"filters\": {\r\n    \"operator\": \"AND\",\r\n    \"filters\": [\r\n      {\r\n        \"column\": \"LABEL\",\r\n        \"operator\": \"EQUAL\",\r\n        \"value\": \"string\"\r\n      }\r\n    ]\r\n  },\r\n  \"reRatings\": {\r\n    \"additionalProp1\": \"string\",\r\n    \"additionalProp2\": \"string\",\r\n    \"additionalProp3\": \"string\"\r\n  },\r\n  \"limit\": {\r\n    \"type\": \"NONE\",\r\n    \"limit\": 0,\r\n    \"order\": \"NONE\"\r\n  },\r\n  \"date\": {\r\n    \"type\": \"FIXED\",\r\n    \"start\": \"2019-01-22T19:19:26.005Z\",\r\n    \"end\": \"2019-01-22T19:19:26.005Z\",\r\n    \"period\": 0,\r\n    \"length\": \"HOUR\",\r\n    \"granularity\": \"HOUR\",\r\n    \"order\": \"NONE\"\r\n  },\r\n  \"createdTime\": \"2019-01-22T19:19:26.005Z\",\r\n  \"updatedTime\": \"2019-01-22T19:19:26.005Z\",\r\n  \"users\": {\r\n    \"additionalProp1\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp2\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp3\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    }\r\n  },\r\n  \"userGroups\": {\r\n    \"additionalProp1\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp2\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp3\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    }\r\n  }\r\n}"
+										},
+										"url": {
+											"raw": "{{host}}/reports/:report_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"reports",
+												":report_id"
+											],
+											"variable": [
+												{
+													"key": "report_id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "DELETE report",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{authorization}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{host}}/reports/:report_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"reports",
+												":report_id"
+											],
+											"variable": [
+												{
+													"key": "report_id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET cloud report",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{authorization}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{host}}/reports/:report_id/clouds/:cloud_id",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"reports",
+												":report_id",
+												"clouds",
+												":cloud_id"
+											],
+											"variable": [
+												{
+													"key": "report_id",
+													"value": ""
+												},
+												{
+													"key": "cloud_id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "09ddebfa-febb-4bba-9977-732faef96e81",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "60411bdb-ada3-436d-80c1-de264fd4c34a",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "insights",
+							"item": [
+								{
+									"name": "GET categories",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{authorization}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{host}}/clouds/:cloud_id/insights?category=COST&startTime=2019-09-12T00:00:00&endTime=2019-09-12T23:59:59",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"clouds",
+												":cloud_id",
+												"insights"
+											],
+											"query": [
+												{
+													"key": "category",
+													"value": "COST"
+												},
+												{
+													"key": "startTime",
+													"value": "2019-09-12T00:00:00"
+												},
+												{
+													"key": "endTime",
+													"value": "2019-09-12T23:59:59"
+												}
+											],
+											"variable": [
+												{
+													"key": "cloud_id",
+													"value": "cldenvag4oqzivrkbzu"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET insights",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{authorization}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{host}}/clouds/:cloud_id/insights/:insight_type?startTime=2019-08-04T00:00:00&endTime=2019-08-06T00:00:00",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"clouds",
+												":cloud_id",
+												"insights",
+												":insight_type"
+											],
+											"query": [
+												{
+													"key": "startTime",
+													"value": "2019-08-04T00:00:00"
+												},
+												{
+													"key": "endTime",
+													"value": "2019-08-06T00:00:00"
+												},
+												{
+													"key": "page",
+													"value": null,
+													"disabled": true
+												},
+												{
+													"key": "size",
+													"value": null,
+													"disabled": true
+												}
+											],
+											"variable": [
+												{
+													"key": "cloud_id",
+													"value": "cldenvag4oqzivrkbzu"
+												},
+												{
+													"key": "insight_type",
+													"value": "insight_cost_reservation_ec2_instances"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "56cfa446-1f09-4384-baa0-2d1478a59eee",
+						"type": "text/javascript",
+						"exec": [
+							"var CryptoJS = require(\"crypto-js\");",
+							"",
+							"authorize({code:pm.variables.get(\"accessCode\"),secret:pm.variables.get(\"secretCode\")},pm.request.url.getPath(),pm.request.method,pm.request.body.raw);",
+							"",
+							"function authorize(credential, resource, method, data) {",
+							"    let algorithm = 'SHA-256'",
+							"    let signedHeader = 'authorization'",
+							"    if (resource.indexOf('?') >= 0) {",
+							"        resource = resource.substring(0, resource.indexOf('?'))",
+							"    }",
+							"    let canonicalRequest = algorithm + '\\n' + ",
+							"                           method.toUpperCase() + '\\n' + ",
+							"                           resource + '\\n' +",
+							"                           '' + '\\n' + ",
+							"                           signedHeader + ':\\n' +",
+							"                           CryptoJS.enc.Hex.stringify(CryptoJS.SHA256(data)) ",
+							"",
+							"",
+							"    let hashedRequest = CryptoJS.enc.Hex.stringify(CryptoJS.SHA256(canonicalRequest))",
+							"    ",
+							"    pm.environment.set(\"authorization\", 'Algorithm=' + algorithm +",
+							"           ',Credential=' + credential.code +",
+							"           ',SignedHeaders=' + signedHeader +",
+							"           ',Signature=' + CryptoJS.enc.Hex.stringify(CryptoJS.HmacSHA256(hashedRequest, credential.secret)));",
+							"  }",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4a56b74a-6186-4bcd-8bf8-5415333884c1",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "16f0e81f-f8c1-47b5-b3d3-b1fcf226144d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "868a2876-6725-4e2c-8908-c2f6f2db0a89",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "db80e7c2-f9c3-4920-acb7-a01042393a65",
+			"key": "host",
+			"value": "https://api.cleancloud.io",
+			"type": "string"
+		}
+	]
+}
