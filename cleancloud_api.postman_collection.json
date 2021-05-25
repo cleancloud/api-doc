@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "41e37594-c889-473c-8ad0-25278a218af4",
+		"_postman_id": "6e96bccd-3b8f-43b0-ab6b-903e0bf250f8",
 		"name": "CleanCloud API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -759,18 +759,18 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}}/cloud_views/:cloud_view_id/permissions",
+									"raw": "{{host}}/cloud_views/:viewCode/permissions",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"cloud_views",
-										":cloud_view_id",
+										":viewCode",
 										"permissions"
 									],
 									"variable": [
 										{
-											"key": "cloud_view_id",
+											"key": "viewCode",
 											"value": ""
 										}
 									]
@@ -1088,7 +1088,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/totals?assessCode",
+									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/totals?assessCode=",
 									"host": [
 										"{{host}}"
 									],
@@ -1131,7 +1131,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/status?assessCode",
+									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/status?assessCode=",
 									"host": [
 										"{{host}}"
 									],
@@ -1668,13 +1668,13 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}}/clouds/:cloudCode:/recommendations/execution?executionCode",
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/execution?executionCode",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"clouds",
-										":cloudCode:",
+										":cloudCode",
 										"recommendations",
 										"execution"
 									],
@@ -2450,7 +2450,7 @@
 					"name": "users",
 					"item": [
 						{
-							"name": "GET users",
+							"name": "list users",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -2477,7 +2477,7 @@
 							"response": []
 						},
 						{
-							"name": "GET user",
+							"name": "fetch user",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -2511,7 +2511,7 @@
 							"response": []
 						},
 						{
-							"name": "POST users",
+							"name": "create user",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -2544,7 +2544,7 @@
 							"response": []
 						},
 						{
-							"name": "PUT user",
+							"name": "update user",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -2584,7 +2584,7 @@
 							"response": []
 						},
 						{
-							"name": "DELETE user",
+							"name": "remove user",
 							"request": {
 								"method": "DELETE",
 								"header": [
@@ -2624,7 +2624,7 @@
 					"name": "user_groups",
 					"item": [
 						{
-							"name": "GET user_groups",
+							"name": "list user groups",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -2651,7 +2651,7 @@
 							"response": []
 						},
 						{
-							"name": "GET user_group",
+							"name": "fetch user group",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -2685,7 +2685,7 @@
 							"response": []
 						},
 						{
-							"name": "POST user_groups",
+							"name": "create user group",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -2718,7 +2718,7 @@
 							"response": []
 						},
 						{
-							"name": "PUT user_group",
+							"name": "update user group",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -2758,7 +2758,7 @@
 							"response": []
 						},
 						{
-							"name": "DELETE user_group",
+							"name": "remove user group",
 							"request": {
 								"method": "DELETE",
 								"header": [
@@ -2798,7 +2798,7 @@
 					"name": "permission_groups",
 					"item": [
 						{
-							"name": "GET permission_groups",
+							"name": "list permission groups",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -2825,7 +2825,7 @@
 							"response": []
 						},
 						{
-							"name": "GET permission_group",
+							"name": "fetch permission group",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -2859,7 +2859,7 @@
 							"response": []
 						},
 						{
-							"name": "POST permission_groups",
+							"name": "create permission group",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -2892,7 +2892,7 @@
 							"response": []
 						},
 						{
-							"name": "PUT permission_group",
+							"name": "update permission group",
 							"request": {
 								"method": "PUT",
 								"header": [
@@ -2932,7 +2932,7 @@
 							"response": []
 						},
 						{
-							"name": "DELETE permission_group",
+							"name": "remove permission group",
 							"request": {
 								"method": "DELETE",
 								"header": [
@@ -2975,7 +2975,7 @@
 							"name": "reports",
 							"item": [
 								{
-									"name": "GET reports",
+									"name": "list cost reports",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -3002,7 +3002,81 @@
 									"response": []
 								},
 								{
-									"name": "POST reports",
+									"name": "fetch cost report",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{authorization}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{host}}/reports/:reportCode",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"reports",
+												":reportCode"
+											],
+											"variable": [
+												{
+													"key": "reportCode",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "fetch cost report data",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "{{authorization}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{host}}/reports/:reportCode/clouds/:cloudCode",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"reports",
+												":reportCode",
+												"clouds",
+												":cloudCode"
+											],
+											"variable": [
+												{
+													"key": "reportCode",
+													"value": ""
+												},
+												{
+													"key": "cloudCode",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create cost report",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -3014,7 +3088,7 @@
 											{
 												"key": "Content-Type",
 												"name": "Content-Type",
-												"value": "application/javascript",
+												"value": "application/json",
 												"type": "text"
 											}
 										],
@@ -3035,41 +3109,7 @@
 									"response": []
 								},
 								{
-									"name": "GET report",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Authorization",
-												"type": "text",
-												"value": "{{authorization}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"url": {
-											"raw": "{{host}}/reports/:report_id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"reports",
-												":report_id"
-											],
-											"variable": [
-												{
-													"key": "report_id",
-													"value": ""
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "PUT report",
+									"name": "update cost report",
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -3081,8 +3121,8 @@
 											{
 												"key": "Content-Type",
 												"name": "Content-Type",
-												"type": "text",
-												"value": "application/javascript"
+												"value": "application/json",
+												"type": "text"
 											}
 										],
 										"body": {
@@ -3090,17 +3130,17 @@
 											"raw": "{\r\n  \"code\": \"string\",\r\n  \"name\": \"string\",\r\n  \"description\": \"string\",\r\n  \"provider\": \"AWS\",\r\n  \"costAllocation\": true,\r\n  \"costTypes\": [\r\n    \"TOTAL\"\r\n  ],\r\n  \"grouping\": [\r\n    {\r\n      \"name\": \"string\",\r\n      \"metaName\": \"string\",\r\n      \"description\": \"string\",\r\n      \"column\": \"LABEL\",\r\n      \"operator\": \"EQUAL\",\r\n      \"value\": \"string\"\r\n    }\r\n  ],\r\n  \"filters\": {\r\n    \"operator\": \"AND\",\r\n    \"filters\": [\r\n      {\r\n        \"column\": \"LABEL\",\r\n        \"operator\": \"EQUAL\",\r\n        \"value\": \"string\"\r\n      }\r\n    ]\r\n  },\r\n  \"reRatings\": {\r\n    \"additionalProp1\": \"string\",\r\n    \"additionalProp2\": \"string\",\r\n    \"additionalProp3\": \"string\"\r\n  },\r\n  \"limit\": {\r\n    \"type\": \"NONE\",\r\n    \"limit\": 0,\r\n    \"order\": \"NONE\"\r\n  },\r\n  \"date\": {\r\n    \"type\": \"FIXED\",\r\n    \"start\": \"2019-01-22T19:19:26.005Z\",\r\n    \"end\": \"2019-01-22T19:19:26.005Z\",\r\n    \"period\": 0,\r\n    \"length\": \"HOUR\",\r\n    \"granularity\": \"HOUR\",\r\n    \"order\": \"NONE\"\r\n  },\r\n  \"createdTime\": \"2019-01-22T19:19:26.005Z\",\r\n  \"updatedTime\": \"2019-01-22T19:19:26.005Z\",\r\n  \"users\": {\r\n    \"additionalProp1\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp2\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp3\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    }\r\n  },\r\n  \"userGroups\": {\r\n    \"additionalProp1\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp2\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    },\r\n    \"additionalProp3\": {\r\n      \"code\": \"string\",\r\n      \"name\": \"string\",\r\n      \"permissions\": [\r\n        \"NO_ACCESS\"\r\n      ]\r\n    }\r\n  }\r\n}"
 										},
 										"url": {
-											"raw": "{{host}}/reports/:report_id",
+											"raw": "{{host}}/reports/:reportCode",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"reports",
-												":report_id"
+												":reportCode"
 											],
 											"variable": [
 												{
-													"key": "report_id",
+													"key": "reportCode",
 													"value": ""
 												}
 											]
@@ -3109,7 +3149,7 @@
 									"response": []
 								},
 								{
-									"name": "DELETE report",
+									"name": "remove cost report",
 									"request": {
 										"method": "DELETE",
 										"header": [
@@ -3124,57 +3164,17 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{host}}/reports/:report_id",
+											"raw": "{{host}}/reports/:reportCode",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"reports",
-												":report_id"
+												":reportCode"
 											],
 											"variable": [
 												{
-													"key": "report_id",
-													"value": ""
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "GET cloud report",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Authorization",
-												"type": "text",
-												"value": "{{authorization}}"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
-										"url": {
-											"raw": "{{host}}/reports/:report_id/clouds/:cloud_id",
-											"host": [
-												"{{host}}"
-											],
-											"path": [
-												"reports",
-												":report_id",
-												"clouds",
-												":cloud_id"
-											],
-											"variable": [
-												{
-													"key": "report_id",
-													"value": ""
-												},
-												{
-													"key": "cloud_id",
+													"key": "reportCode",
 													"value": ""
 												}
 											]
@@ -3211,7 +3211,7 @@
 							"name": "insights",
 							"item": [
 								{
-									"name": "GET categories",
+									"name": "list insight categories",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -3226,13 +3226,13 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{host}}/clouds/:cloud_id/insights?category=COST&startTime=2019-09-12T00:00:00&endTime=2019-09-12T23:59:59",
+											"raw": "{{host}}/clouds/:cloudCode/insights?category=COST&startTime=YYYY-MM-DDT00:00:00&endTime=YYYY-MM-DDT23:59:59",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"clouds",
-												":cloud_id",
+												":cloudCode",
 												"insights"
 											],
 											"query": [
@@ -3242,17 +3242,17 @@
 												},
 												{
 													"key": "startTime",
-													"value": "2019-09-12T00:00:00"
+													"value": "YYYY-MM-DDT00:00:00"
 												},
 												{
 													"key": "endTime",
-													"value": "2019-09-12T23:59:59"
+													"value": "YYYY-MM-DDT23:59:59"
 												}
 											],
 											"variable": [
 												{
-													"key": "cloud_id",
-													"value": "cldenvag4oqzivrkbzu"
+													"key": "cloudCode",
+													"value": ""
 												}
 											]
 										}
@@ -3260,14 +3260,14 @@
 									"response": []
 								},
 								{
-									"name": "GET insights",
+									"name": "list insights data",
 									"request": {
 										"method": "GET",
 										"header": [
 											{
 												"key": "Authorization",
-												"value": "{{authorization}}",
-												"type": "text"
+												"type": "text",
+												"value": "{{authorization}}"
 											}
 										],
 										"body": {
@@ -3275,24 +3275,24 @@
 											"raw": ""
 										},
 										"url": {
-											"raw": "{{host}}/clouds/:cloud_id/insights/:insight_type?startTime=2019-08-04T00:00:00&endTime=2019-08-06T00:00:00",
+											"raw": "{{host}}/clouds/:cloudCode/insights/:insightType?startTime=YYYY-MM-DDT00:00:00&endTime=YYYY-MM-DDT00:00:00",
 											"host": [
 												"{{host}}"
 											],
 											"path": [
 												"clouds",
-												":cloud_id",
+												":cloudCode",
 												"insights",
-												":insight_type"
+												":insightType"
 											],
 											"query": [
 												{
 													"key": "startTime",
-													"value": "2019-08-04T00:00:00"
+													"value": "YYYY-MM-DDT00:00:00"
 												},
 												{
 													"key": "endTime",
-													"value": "2019-08-06T00:00:00"
+													"value": "YYYY-MM-DDT00:00:00"
 												},
 												{
 													"key": "page",
@@ -3307,12 +3307,12 @@
 											],
 											"variable": [
 												{
-													"key": "cloud_id",
-													"value": "cldenvag4oqzivrkbzu"
+													"key": "cloudCode",
+													"value": ""
 												},
 												{
-													"key": "insight_type",
-													"value": "insight_cost_reservation_ec2_instances"
+													"key": "insightType",
+													"value": "COST"
 												}
 											]
 										}
