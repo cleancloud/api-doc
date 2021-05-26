@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6e96bccd-3b8f-43b0-ab6b-903e0bf250f8",
+		"_postman_id": "257185f6-c2ad-41cd-910e-d41472c9d460",
 		"name": "CleanCloud API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1571,7 +1571,88 @@
 				},
 				{
 					"name": "inspect",
-					"item": [],
+					"item": [
+						{
+							"name": "inspect cost and usage data",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode:/inspect?groups&filters&dataTypes=cost&interval=MONTH&fromDate&toDate&compareFrom&compareTo&topLimit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode:",
+										"inspect"
+									],
+									"query": [
+										{
+											"key": "groups",
+											"value": null,
+											"description": "RSQL format such as accountId;cloudName;serviceCode"
+										},
+										{
+											"key": "filters",
+											"value": null,
+											"description": "RSQL format such as serviceCode=='AmazonEC2'"
+										},
+										{
+											"key": "dataTypes",
+											"value": "cost",
+											"description": "RSQL format such as cost;invoiced;utilization"
+										},
+										{
+											"key": "interval",
+											"value": "MONTH"
+										},
+										{
+											"key": "fromDate",
+											"value": null,
+											"description": "Date format of yyyy-MM-ddTHH:mm:ss"
+										},
+										{
+											"key": "toDate",
+											"value": null,
+											"description": "Date format of yyyy-MM-ddTHH:mm:ss"
+										},
+										{
+											"key": "compareFrom",
+											"value": null,
+											"description": "Date format of yyyy-MM-ddTHH:mm:ss"
+										},
+										{
+											"key": "compareTo",
+											"value": null,
+											"description": "Date format of yyyy-MM-ddTHH:mm:ss"
+										},
+										{
+											"key": "topLimit",
+											"value": null
+										}
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
 					"_postman_isSubFolder": true
 				},
 				{
