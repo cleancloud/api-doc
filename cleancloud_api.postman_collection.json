@@ -1588,7 +1588,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}}/clouds/:cloudCode:/inspect?groups&filters&dataTypes=cost&interval=MONTH&fromDate&toDate&compareFrom&compareTo&topLimit",
+									"raw": "{{host}}/clouds/:cloudCode:/inspect?groups&filters&dataTypes=cost&interval=MONTH&fromDate&toDate&compareFrom&compareTo&topLimit&nextToken=&pageSize=100",
 									"host": [
 										"{{host}}"
 									],
@@ -1640,6 +1640,14 @@
 										{
 											"key": "topLimit",
 											"value": null
+										},
+										{
+											"key": "nextToken",
+											"value": ""
+										},
+										{
+											"key": "pageSize",
+											"value": "100"
 										}
 									],
 									"variable": [
