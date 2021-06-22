@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "257185f6-c2ad-41cd-910e-d41472c9d460",
+		"_postman_id": "54779c1e-b49c-4000-8cdc-87f20f6b6b5a",
 		"name": "CleanCloud API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1260,7 +1260,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "[\n  {\n    \"cloudCode\": \"string\",\n    \"resourceId\": \"string\",\n    \"comments\": [\n      {\n        \"userCode\": \"string\",\n        \"comment\": \"string\"\n      }\n    ]\n  }\n]"
+									"raw": "[\n  {\n    \"cloudCode\": \"string\",\n    \"resourceId\": \"string\",\n    \"comments\": [\n      {\n        \"comment\": \"string\"\n      }\n    ]\n  }\n]"
 								},
 								"url": {
 									"raw": "{{host}}/clouds/:cloudCode/scores/comments",
@@ -1326,7 +1326,7 @@
 							"response": []
 						},
 						{
-							"name": "comment risk acceptance",
+							"name": "create risk acceptances",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -1344,51 +1344,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\" : {\n    \"cloudCode\": \"string\",\n    \"checkCode\": \"string\",\n    \"resourceId\": \"string\"\n  },\n  \"comments\": [\n\t{\n\t  \"comment\": \"string\"\n\t}\n  ]\n}"
-								},
-								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/_/comments",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"clouds",
-										":cloudCode",
-										"scores",
-										"risk_acceptance",
-										"_",
-										"comments"
-									],
-									"variable": [
-										{
-											"key": "cloudCode",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "create risk acceptances",
-							"request": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{authorization}}",
-										"type": "text"
-									},
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"id\" : {\n    \"cloudCode\": \"string\",\n    \"checkCode\": \"string\",\n    \"resourceId\": \"string\"\n  },\n  \"expirationDate\": 1,\n  \"comments\": [\n\t{\n\t  \"comment\": \"string\"\n\t}\n  ]\n}"
+									"raw": "[\n\t{\n    \t\"cloudCode\": \"string\",\n    \t\"checkCode\": \"string\",\n    \t\"resourceId\": \"string\",\n\t\t\"expirationTime\": 1,\n\t\t\"comments\": [\n\t\t\t{\n\t\t\t\t\"comment\": \"string\"\n\t\t\t}\n\t\t]\n\t}\n]"
 								},
 								"url": {
 									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance",
@@ -1430,10 +1386,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\" : {\n    \"cloudCode\": \"string\",\n    \"checkCode\": \"string\",\n    \"resourceId\": \"string\"\n  },\n  \"status\": \"string\",\n  \"expirationDate\": 1,\n  \"comments\": [\n\t{\n\t  \"comment\": \"string\"\n\t}\n  ]\n}"
+									"raw": "{\n\t\"expirationTime\": 1,\n\t\"comments\": [\n\t\t{\n\t\t\t\"comment\": \"string\"\n\t\t}\n\t]\n}"
 								},
 								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/_",
+									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/:riskAcceptanceCode",
 									"host": [
 										"{{host}}"
 									],
@@ -1442,11 +1398,15 @@
 										":cloudCode",
 										"scores",
 										"risk_acceptance",
-										"_"
+										":riskAcceptanceCode"
 									],
 									"variable": [
 										{
 											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "riskAcceptanceCode",
 											"value": ""
 										}
 									]
@@ -1457,7 +1417,7 @@
 						{
 							"name": "approve risk acceptance",
 							"request": {
-								"method": "PATCH",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
@@ -1473,7 +1433,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"id\" : {\n    \"cloudCode\": \"string\",\n    \"checkCode\": \"string\",\n    \"resourceId\": \"string\"\n  },\n  \"status\": \"string\",\n  \"expirationDate\": 1,\n  \"comments\": [\n\t{\n\t  \"comment\": \"string\"\n\t}\n  ]\n}"
+									"raw": "[\n\t{\n    \t\"code\": \"string\",\n    \t\"status\": \"string\",\n\t\t\"comments\": [\n\t\t\t{\n\t\t\t\t\"comment\": \"string\"\n\t\t\t}\n\t\t]\n\t}\n]"
 								},
 								"url": {
 									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/approval",
@@ -1490,6 +1450,54 @@
 									"variable": [
 										{
 											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deactivate risk acceptance",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"comment\": \"string\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/:riskAcceptanceCode/deactivate",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"risk_acceptance",
+										":riskAcceptanceCode",
+										"deactivate"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "riskAcceptanceCode",
 											"value": ""
 										}
 									]
@@ -2027,6 +2035,207 @@
 								}
 							},
 							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "recommendation not applicable",
+					"item": [
+						{
+							"name": "list not applicable",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/not_applicable",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										"not_applicable"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create not applicable",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n\t{\n    \t\"cloudCode\": \"string\",\n    \t\"checkCode\": \"string\",\n    \t\"resourceId\": \"string\",\n\t\t\"expirationTime\": 1,\n\t\t\"comments\": [\n\t\t\t{\n\t\t\t\t\"comment\": \"string\"\n\t\t\t}\n\t\t]\n\t}\n]"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/not_applicable",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										"not_applicable"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update not applicable",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"expirationTime\": 1,\n\t\"comments\": [\n\t\t{\n\t\t\t\"comment\": \"string\"\n\t\t}\n\t]\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/not_applicable/:notApplicableCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										"not_applicable",
+										":notApplicableCode"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "notApplicableCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deactivate not applicable",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"comment\": \"string\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/not_applicable/:notApplicableCode/deactivate",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"recommendations",
+										"not_applicable",
+										":notApplicableCode",
+										"deactivate"
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										},
+										{
+											"key": "notApplicableCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2cb10dd2-7b83-4907-bbf6-0d5d508e6861",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "a8d2407a-4229-44fa-a38e-a70fac0c5a08",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					],
 					"_postman_isSubFolder": true
