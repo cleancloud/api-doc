@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "54779c1e-b49c-4000-8cdc-87f20f6b6b5a",
+		"_postman_id": "944c639b-2626-4557-8cb6-766c3f6114b0",
 		"name": "CleanCloud API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1596,13 +1596,13 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}}/clouds/:cloudCode:/inspect?groups&filters&dataTypes=cost&interval=MONTH&fromDate&toDate&compareFrom&compareTo&topLimit&nextToken=&pageSize=100",
+									"raw": "{{host}}/clouds/:cloudCode/inspect?groups&filters&dataTypes=cost&interval=MONTH&fromDate&toDate&compareFrom&compareTo&topLimit&nextToken=&pageSize=100",
 									"host": [
 										"{{host}}"
 									],
 									"path": [
 										"clouds",
-										":cloudCode:",
+										":cloudCode",
 										"inspect"
 									],
 									"query": [
@@ -1987,9 +1987,9 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}/clouds/:cloudCode/recommendations/:recommendationCode/metrics/:metricName?fromDate&toDate&regionCode&resourceIds",
+									"raw": "{{host}}/clouds/:cloudCode/recommendations/:recommendationCode/metrics/:metricName?fromDate&toDate&regionCode&resourceIds",
 									"host": [
-										"{{host}"
+										"{{host}}"
 									],
 									"path": [
 										"clouds",
