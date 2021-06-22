@@ -2745,6 +2745,242 @@
 					"_postman_isSubFolder": true
 				},
 				{
+					"name": "custom schemas",
+					"item": [
+						{
+							"name": "list custom schemas",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch custom schema",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas/:schemaCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas",
+										":schemaCode"
+									],
+									"variable": [
+										{
+											"key": "schemaCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create custom schema",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"dateField\": \"string\",\r\n  \"fields\": [\r\n    {\r\n      \"name\": \"string\",\r\n      \"type\": \"string\"\r\n    }\r\n  ]\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update custom schema",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"dateField\": \"string\",\r\n  \"fields\": [\r\n    {\r\n      \"name\": \"string\",\r\n      \"type\": \"string\"\r\n    }\r\n  ]\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas/:schemaCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas",
+										":schemaCode"
+									],
+									"variable": [
+										{
+											"key": "schemaCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "partially update custom schema",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"string\",\r\n  \"dateField\": \"string\",\r\n  \"fields\": [\r\n    {\r\n      \"name\": \"string\",\r\n      \"type\": \"string\"\r\n    }\r\n  ]\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas/:schemaCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas",
+										":schemaCode"
+									],
+									"variable": [
+										{
+											"key": "schemaCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "remove custom schema",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas/:schemaCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas",
+										":schemaCode"
+									],
+									"variable": [
+										{
+											"key": "schemaCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3392e54d-a3e5-4345-a4b5-809b0baa9812",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6e0d0cbd-c61a-46ba-b35a-52ad39156d99",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "users",
 					"item": [
 						{
