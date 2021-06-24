@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "944c639b-2626-4557-8cb6-766c3f6114b0",
+		"_postman_id": "138e088d-aa80-4110-9975-3712a91f8ddd",
 		"name": "CleanCloud API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -970,6 +970,49 @@
 							"response": []
 						},
 						{
+							"name": "list score totals",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/totals?assessCode=",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"clouds",
+										":cloudCode",
+										"scores",
+										"assessment",
+										"totals"
+									],
+									"query": [
+										{
+											"key": "assessCode",
+											"value": ""
+										}
+									],
+									"variable": [
+										{
+											"key": "cloudCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "list score assessment history",
 							"request": {
 								"method": "GET",
@@ -1059,98 +1102,6 @@
 										},
 										{
 											"key": "diffAssessCode",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "score totals",
-					"item": [
-						{
-							"name": "list score totals",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{authorization}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/totals?assessCode=",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"clouds",
-										":cloudCode",
-										"scores",
-										"assessment",
-										"totals"
-									],
-									"query": [
-										{
-											"key": "assessCode",
-											"value": ""
-										}
-									],
-									"variable": [
-										{
-											"key": "cloudCode",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "list score status",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{authorization}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/scores/assessment/status?assessCode=",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"clouds",
-										":cloudCode",
-										"scores",
-										"assessment",
-										"status"
-									],
-									"query": [
-										{
-											"key": "assessCode",
-											"value": ""
-										}
-									],
-									"variable": [
-										{
-											"key": "cloudCode",
 											"value": ""
 										}
 									]
@@ -1955,80 +1906,6 @@
 										},
 										{
 											"key": "recommendationCode",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "recommendation metrics",
-					"item": [
-						{
-							"name": "fetch recommendation metrics",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{authorization}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/recommendations/:recommendationCode/metrics/:metricName?fromDate&toDate&regionCode&resourceIds",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"clouds",
-										":cloudCode",
-										"recommendations",
-										":recommendationCode",
-										"metrics",
-										":metricName"
-									],
-									"query": [
-										{
-											"key": "fromDate",
-											"value": null
-										},
-										{
-											"key": "toDate",
-											"value": null
-										},
-										{
-											"key": "regionCode",
-											"value": null
-										},
-										{
-											"key": "resourceIds",
-											"value": null,
-											"description": "Comma separated values"
-										}
-									],
-									"variable": [
-										{
-											"key": "cloudCode",
-											"value": ""
-										},
-										{
-											"key": "recommendationCode",
-											"value": ""
-										},
-										{
-											"key": "metricName",
 											"value": ""
 										}
 									]
