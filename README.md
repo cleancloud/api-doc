@@ -25,15 +25,21 @@ Insert a name for the token and click on "Create" button, afterwards a dialog wi
 
 Store the generated user token which will be used to dynamically generate an temporarly API tokens.
 
-## Postman setup
+## Postman API collection
 
 Open the Postman application in your computer and import [CleanCloud API collection](https://github.com/cleancloud/api-doc/blob/main/cleancloud_api.postman_collection.json)
 
 > File > Import > "Choose the downloaded collection"
 
+## Postman user token
+
+Now let's import the [User token collection](https://github.com/cleancloud/api-doc/blob/master/cleancloud_user_token.postman_environment.json)
+
+> File > Import > "Choose the downloaded user token collection"
+
 Include manually the user token **code** and **secret** over environment variables as presented below:
 
-![postman_user_token](https://user-images.githubusercontent.com/70276848/123282023-8986ae80-d4e0-11eb-92fa-fbbeb1bea432.png)
+![postman_user_token](https://user-images.githubusercontent.com/70276848/123284972-0b77d700-d4e3-11eb-89e6-f4d1e227404f.png)
 
 Afterwards expand the collection "CleanCloud API" and open the "API token" > "GET fetch api token" and generate a temporary API token:
 
