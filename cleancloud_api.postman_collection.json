@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "138e088d-aa80-4110-9975-3712a91f8ddd",
+		"_postman_id": "f492e324-99db-4e34-9345-7d1de707281d",
 		"name": "CleanCloud API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -2858,6 +2858,128 @@
 					"_postman_isSubFolder": true
 				},
 				{
+					"name": "custom schema jobs",
+					"item": [
+						{
+							"name": "list custom schema jobs",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{authorization}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas/:schemaCode/jobs",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas",
+										":schemaCode",
+										"jobs"
+									],
+									"variable": [
+										{
+											"key": "schemaCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "fetch custom schema job",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas/:schemaCode/jobs/:jobCode",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas",
+										":schemaCode",
+										"jobs",
+										":jobCode"
+									],
+									"variable": [
+										{
+											"key": "schemaCode",
+											"value": ""
+										},
+										{
+											"key": "jobCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "custom schema create job",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{authorization}}"
+									},
+									{
+										"key": "Content-Type ",
+										"value": "application/octet-stream",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "dateFieldName,stringFieldName,floatFieldName,recordFieldName/tagName\n\"yyyy-MM-DDTHH:mm:ss\",\"string\",0.00,\"tagValue\n"
+								},
+								"url": {
+									"raw": "{{host}}/custom_schemas/:schemaCode/jobs/input",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"custom_schemas",
+										":schemaCode",
+										"jobs",
+										"input"
+									],
+									"variable": [
+										{
+											"key": "schemaCode",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
 					"name": "users",
 					"item": [
 						{
@@ -3746,7 +3868,7 @@
 						"exec": [
 							"var CryptoJS = require(\"crypto-js\");",
 							"",
-							"authorize({code:pm.variables.get(\"accessCode\"),secret:pm.variables.get(\"secretCode\")},pm.request.url.getPath(),pm.request.method,pm.request.body.raw);",
+							"authorize({code:pm.variables.get(\"accessCode\"),secret:pm.variables.get(\"secretCode\")},pm.request.url.getPath(),pm.request.method,pm.request.headers.find(h => h.key == 'Content-Type') == 'application/octet-stream' ? '' : pm.request.body.raw);",
 							"",
 							"function authorize(credential, resource, method, data) {",
 							"    let algorithm = 'SHA-256'",
