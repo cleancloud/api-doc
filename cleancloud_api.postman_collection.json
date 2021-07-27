@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f492e324-99db-4e34-9345-7d1de707281d",
+		"_postman_id": "b8304a2e-61b4-48bc-97a6-83bf1a6ac5c8",
 		"name": "CleanCloud API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -423,151 +423,6 @@
 								}
 							},
 							"response": []
-						}
-					],
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "cloud customers",
-					"item": [
-						{
-							"name": "list cloud customers",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{authorization}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/customers",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"clouds",
-										":cloudCode",
-										"customers"
-									],
-									"variable": [
-										{
-											"key": "cloudCode",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "fetch cloud customer",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "{{authorization}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/customers/:customerCode",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"clouds",
-										":cloudCode",
-										"customers",
-										":customerCode"
-									],
-									"variable": [
-										{
-											"key": "cloudCode",
-											"value": ""
-										},
-										{
-											"key": "customerCode",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "list customer linked clouds",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{authorization}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/customers/:customerCode/linkeds",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"clouds",
-										":cloudCode",
-										"customers",
-										":customerCode",
-										"linkeds"
-									],
-									"variable": [
-										{
-											"key": "cloudCode",
-											"value": ""
-										},
-										{
-											"key": "customerCode",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"description": "Used for Azure CSP only",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "a4736efb-67ab-4352-8147-ac5c8dd3729c",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "94395cd7-3192-43ab-847a-29306d801205",
-								"type": "text/javascript",
-								"exec": [
-									""
-								]
-							}
 						}
 					],
 					"_postman_isSubFolder": true
@@ -1547,7 +1402,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{host}}/clouds/:cloudCode/inspect?groups&filters&dataTypes=cost&interval=MONTH&fromDate&toDate&compareFrom&compareTo&topLimit&nextToken=&pageSize=100",
+									"raw": "{{host}}/clouds/:cloudCode/inspect?groups&orders=&filters&dataTypes=cost&interval=MONTH&fromDate&toDate&compareFrom&compareTo&topLimit&nextToken=&pageSize=100",
 									"host": [
 										"{{host}}"
 									],
@@ -1561,6 +1416,11 @@
 											"key": "groups",
 											"value": null,
 											"description": "RSQL format such as accountId;cloudName;serviceCode"
+										},
+										{
+											"key": "orders",
+											"value": "",
+											"description": "RSQL format such as cloudName=='DESC';serviceCode=='ASC'"
 										},
 										{
 											"key": "filters",
@@ -3845,7 +3705,7 @@
 												},
 												{
 													"key": "insightType",
-													"value": "COST"
+													"value": ""
 												}
 											]
 										}
