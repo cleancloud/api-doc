@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b8304a2e-61b4-48bc-97a6-83bf1a6ac5c8",
+		"_postman_id": "5013c00f-7f99-4886-a076-0d828fec459f",
 		"name": "CleanCloud API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1239,7 +1239,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "[\n\t{\n    \t\"code\": \"string\",\n    \t\"status\": \"string\",\n\t\t\"comments\": [\n\t\t\t{\n\t\t\t\t\"comment\": \"string\"\n\t\t\t}\n\t\t]\n\t}\n]"
+									"raw": "[\n\t{\n    \t\"code\": \"string\",\n    \t\"cloudCode\": \"string\",\n    \t\"status\": \"string\",\n\t\t\"comments\": [\n\t\t\t{\n\t\t\t\t\"comment\": \"string\"\n\t\t\t}\n\t\t]\n\t}\n]"
 								},
 								"url": {
 									"raw": "{{host}}/clouds/:cloudCode/scores/risk_acceptance/approval",
